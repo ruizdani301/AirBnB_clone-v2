@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from decimal import *
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -32,8 +33,8 @@ class HBNBCommand(cmd.Cmd):
 
     def preloop(self):
         """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb)')
+        if not sys._stdin_.isatty():
+            print('(hbnb) ', end="")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -115,17 +116,31 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = args.split(' ')
+        cls = args[0]
         if not args:
-            print("** class name missing **")
+            print("* class name missing *")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        elif cls not in HBNBCommand.classes:
+            print("* class doesn't exist *")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[cls]()
+        for i in range(1, len(args)):
+            par = args[i].split('=')
+            value = par[1]
+            if isinstance(value, str):
+                value = value.replace(' ', '_')
+
+            value = value.replace(',', '.')
+            if isinstance(value, float):
+                value = Decimal(value)
+            elif isinstance(value, int):
+                value = int(value)
+            arg = cls + ' ' + new_instance.id + ' ' + par[0] + ' ' + value
+            HBNBCommand.do_update(self, arg)
         storage.save()
         print(new_instance.id)
         storage.save()
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
