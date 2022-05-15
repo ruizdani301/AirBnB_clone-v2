@@ -40,4 +40,11 @@ class TestDBStorage(unittest.TestCase):
         self.query.close()
         self.db.close()
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_pep8_DBStorage(self):
+        """test pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/db_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
+
 
