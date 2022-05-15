@@ -128,10 +128,8 @@ class HBNBCommand(cmd.Cmd):
         for i in range(1, len(args)):
             par = args[i].split('=')
             value = par[1]
-            if isinstance(value, str):
-                value = value.replace(' ', '_')
-
             value = value.replace(',', '.')
+
             if isinstance(value, float):
                 value = Decimal(value)
             elif isinstance(value, int):
@@ -325,7 +323,8 @@ class HBNBCommand(cmd.Cmd):
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
-
+                if isinstance(att_val, str):
+                    att_val = att_val.replace('_', ' ')
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
 
