@@ -143,6 +143,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         storage.save()
 
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -274,7 +275,6 @@ class HBNBCommand(cmd.Cmd):
 
         # generate key from class and id
         key = c_name + "." + c_id
-
         # determine if key is present
         if key not in storage.all():
             print("** no instance found **")
@@ -328,6 +328,7 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
                 if isinstance(att_val, str):
                     att_val = att_val.replace('_', ' ')
+                #print(att_val)
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
 
