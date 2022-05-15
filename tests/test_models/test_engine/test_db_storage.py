@@ -47,4 +47,18 @@ class TestDBStorage(unittest.TestCase):
         p = style.check_files(['models/engine/db_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_read_tables(self):
+        """tables"""
+        self.query.execute("SHOW TABLES")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 7)
+
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_no_element_user(self):
+        """no elem in users"""
+        self.query.execute("SELECT * FROM users")
+        salida = self.query.fetchall()
+        self.assertEqual(len(salida), 0)
+
 
