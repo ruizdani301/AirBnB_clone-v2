@@ -119,17 +119,18 @@ class HBNBCommand(cmd.Cmd):
         args = args.split(' ')
         cls = args[0]
         if not args:
-            print("* class name missing *")
+            print("** class name missing **")
             return
         elif cls not in HBNBCommand.classes:
-            print("* class doesn't exist *")
+            print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[cls]()
         for i in range(1, len(args)):
             par = args[i].split('=')
             value = par[1]
-            if isinstance(value, str):
-                value = value.replace(' ', '_')
+            value = value.replace('\\', '')
+            value = value.replace('\'', '')
+            value = value.replace('\"', '')
 
             value = value.replace(',', '.')
             if isinstance(value, float):
@@ -141,6 +142,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -273,7 +275,6 @@ class HBNBCommand(cmd.Cmd):
 
         # generate key from class and id
         key = c_name + "." + c_id
-
         # determine if key is present
         if key not in storage.all():
             print("** no instance found **")
@@ -325,7 +326,9 @@ class HBNBCommand(cmd.Cmd):
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
-
+                if isinstance(att_val, str):
+                    att_val = att_val.replace('_', ' ')
+                #print(att_val)
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
 
