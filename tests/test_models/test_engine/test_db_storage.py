@@ -34,4 +34,10 @@ class TestDBStorage(unittest.TestCase):
         self.storage = DBStorage()
         self.storage.reload()
 
+    @classmethod
+    def teardown(self):
+        """at the end of the test this will tear it down"""
+        self.query.close()
+        self.db.close()
+
 
