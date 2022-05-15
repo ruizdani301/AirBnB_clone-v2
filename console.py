@@ -119,17 +119,20 @@ class HBNBCommand(cmd.Cmd):
         args = args.split(' ')
         cls = args[0]
         if not args:
-            print("* class name missing *")
+            print("** class name missing **")
             return
         elif cls not in HBNBCommand.classes:
-            print("* class doesn't exist *")
+            print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[cls]()
         for i in range(1, len(args)):
             par = args[i].split('=')
             value = par[1]
-            value = value.replace(',', '.')
+            value = value.replace('\\', '')
+            value = value.replace('\'', '')
+            value = value.replace('\"', '')
 
+            value = value.replace(',', '.')
             if isinstance(value, float):
                 value = Decimal(value)
             elif isinstance(value, int):
