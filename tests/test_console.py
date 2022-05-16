@@ -89,7 +89,53 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                     "[[User]", f.getvalue()[:7])
 
+    def test_show(self):
+        """Test show command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show")
+            self.assertEqual(
+                    "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show asdfsdrfs")
+            self.assertEqual(
+                    "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show BaseModel")
+            self.assertEqual(
+                    "** instance id missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show BaseModel abcd-123")
+            self.assertEqual(
+                    "** no instance found **\n", f.getvalue())
 
+    def test_destroy(self):
+        """Test destroy command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("destroy")
+            self.assertEqual(
+                    "** class name missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("destroy Galaxy")
+            self.assertEqual(
+                    "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("destroy User")
+            self.assertEqual(
+                    "** instance id missing **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("destroy BaseModel 12345")
+            self.assertEqual(
+                    "** no instance found **\n", f.getvalue())
+
+    def test_all(self):
+        """Test all command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("all asdfsdfsd")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("all State")
+            self.assertEqual("[]\n", f.getvalue())
+            
 
 
 if __name__ == "__main__":
