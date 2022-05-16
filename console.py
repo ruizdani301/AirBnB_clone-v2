@@ -138,11 +138,10 @@ class HBNBCommand(cmd.Cmd):
             elif isinstance(value, int):
                 value = int(value)
             arg = cls + ' ' + new_instance.id + ' ' + par[0] + ' ' + value
-            HBNBCommand.do_update(self, arg)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
+            HBNBCommand.do_update(self, arg, new_instance)
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -224,11 +223,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -250,7 +249,7 @@ class HBNBCommand(cmd.Cmd):
         """ """
         print("Usage: count <class_name>")
 
-    def do_update(self, args):
+    def do_update(self, args, obj=None):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
@@ -276,9 +275,12 @@ class HBNBCommand(cmd.Cmd):
         # generate key from class and id
         key = c_name + "." + c_id
         # determine if key is present
-        if key not in storage.all():
-            print("** no instance found **")
-            return
+        if obj is not None:
+            pass
+        else:
+            if key not in storage.all():
+                print("** no instance found **")
+                return
 
         # first determine if kwargs or args
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
@@ -310,8 +312,10 @@ class HBNBCommand(cmd.Cmd):
             args = [att_name, att_val]
 
         # retrieve dictionary of current objects
-        new_dict = storage.all()[key]
-
+        if obj is None:
+            new_dict = storage.all()[key]
+        else:
+            new_dict = obj
         # iterate through attr names and values
         for i, att_name in enumerate(args):
             # block only runs on even iterations
@@ -328,11 +332,11 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
                 if isinstance(att_val, str):
                     att_val = att_val.replace('_', ' ')
-                #print(att_val)
+                # print(att_val)
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
-
-        new_dict.save()  # save updates to file
+        if obj is None:
+            new_dict.save()  # save updates to file
 
     def help_update(self):
         """ Help information for the update class """

@@ -7,18 +7,22 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
+
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
     Base = object
 
+
 class BaseModel:
     """class base model"""
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        id = Column(String(60), primary_key=True, nullable=False)
-        created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-        updated_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-
+        id = Column(String(60), primary_key=True,
+                    nullable=False)
+        created_at = Column(DateTime, default=datetime.datetime.utcnow,
+                            nullable=False)
+        updated_at = Column(DateTime, default=datetime.datetime.utcnow,
+                            nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -30,13 +34,12 @@ class BaseModel:
             storage.new(self)
 
         else:
-            kwargs['updated_at'] = datetime.datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['updated_at'] = datetime.datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
             del kwargs['__class__']
             self.__dict__.update(kwargs)
-
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -62,4 +65,6 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
         return dictionary
