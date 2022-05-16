@@ -187,6 +187,28 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("State.count()")
             self.assertEqual("0\n", f.getvalue())
 
+    def test_z_show(self):
+        """Test alternate show command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("safdsa.show()")
+            self.assertEqual(
+                    "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("BaseModel.show(abcd-123)")
+            self.assertEqual(
+                    "** no instance found **\n", f.getvalue())
+
+    def test_destroy(self):
+        """Test alternate destroy command inpout"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("Galaxy.destroy()")
+            self.assertEqual(
+                    "** class doesn't exist **\n", f.getvalue())
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("User.destroy(12345)")
+            self.assertEqual(
+                    "** no instance found **\n", f.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
