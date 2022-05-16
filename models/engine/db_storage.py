@@ -37,7 +37,8 @@ class DBStorage:
         fclass = {}
 
         if cls is None:
-            data = self.__session.query(State, City, Place).all()
+            data = self.__session.query(State, City, Place, Amenity,
+                                        Review, User).all()
         else:
             data = self.__session.query(cls).all()
 
