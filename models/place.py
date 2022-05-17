@@ -6,6 +6,7 @@ from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -14,6 +15,13 @@ class Place(BaseModel, Base):
     __tablename__ = 'places'
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        place_amenity = Table("place_amenity", Base.metadata,
+                              Column("place_id", String(60),
+                                     ForeignKey("places.id"),
+                                     primary_key=True),
+                              Column("amenity_id", String(60),
+                                     ForeignKey("amenities.id"),
+                                     primary_key=True))
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         reviews = relationship("Review", backref="places",
@@ -47,3 +55,25 @@ class Place(BaseModel, Base):
                 if(vplace.place_id == self.id):
                     list_place.append(vplace)
             return list_place
+
+        @property
+        def cities(self):
+            """cities with relation to state"""
+            list_city = []
+            for cty in models.storage.all(models.review).values():
+                if(cty.place_id == self.id):
+                    list_city.append(cty)
+            return list_city
+
+        @property
+        def amenities(self):
+            my_atr_amenity = []
+            for amty in self.amenity_ids:
+                if self.id == amty.id:
+                    my_atr_amenity.append(amty)
+            return my_atr_amenity
+
+        @amenities.setter
+        def amenities(self, amenity):
+            if type(amenity).__name__ == 'Amenity':
+                self.amenity_ids.append(amenity)
