@@ -107,3 +107,19 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    @unittest.skipIf(storage != 'db', "not testing db storage")
+    def test_all_returns_dict(self):
+        pass
+
+    @unittest.skipIf(storage != 'db', "not testing db storage")
+    def test_all_no_class(self):
+        pass
+
+    @unittest.skipIf(storage != 'db', "not testing db storage")
+    def test_new(self):
+        pass
+
+    @unittest.skipIf(storage != 'db', "not testing db storage")
+    def test_save(self):
+        pass

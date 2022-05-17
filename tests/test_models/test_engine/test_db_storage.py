@@ -81,6 +81,27 @@ class TestDBStorage(unittest.TestCase):
         salida = self.query.fetchall()
         self.assertEqual(len(salida), 1)
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+    @classmethod
+    def test_pep8_conformance_db_storage(self):
+        pass
+    @classmethod
+    def test_pep8_conformance_test_db_storage(self):
+        pass
+    @classmethod
+    def test_db_storage_module_docstring(self):
+        pass
+    @classmethod
+    def test_db_storage_class_docstring(self):
+        """Test of docstring"""
+        self.assertTrue(len(self.citymodel.__doc__) > 0)
+
+    @classmethod
+    def test_dbs_func_docstrings(self):
+
+
 
 if __name__ == "__main__":
     unittest.main()

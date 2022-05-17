@@ -21,6 +21,14 @@ from models.engine.file_storage import FileStorage
 
 class TestConsole(unittest.TestCase):
     """this will test the console"""
+    @classmethod
+    def test_ClassExist(self):
+        """verify class exist"""
+
+        clp = "<class 'models.place.Place'>"
+        pl = HBNBCommand()
+        #print(str(type(pl)))
+        self.assertTrue(str(type(pl)), clp)
 
     @classmethod
     def setUpClass(cls):
