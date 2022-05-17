@@ -7,6 +7,10 @@ from models.review import Review
 class test_review(test_basemodel):
     """ test for review """
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
     def test_ClassExist(self):
         """verify class exist"""
 
@@ -35,9 +39,7 @@ class test_review(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.text), str)
 
-    def setUpClass(cls):
-        pass
-
+"""
     def test_pep8_conformance_review(self):
         pass
 
@@ -65,3 +67,4 @@ class test_review(test_basemodel):
 
     def test_str(self):
         pass
+"""

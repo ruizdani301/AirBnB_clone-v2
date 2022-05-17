@@ -7,6 +7,10 @@ from models.user import User
 class test_User(test_basemodel):
     """ test for User """
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
     def test_ClassExist(self):
         """verify class exist"""
 
@@ -40,9 +44,7 @@ class test_User(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.password), str)
 
-    def setUpClass(cls):
-        pass
-
+    """
     def test_pep8_conformance_user(self):
         pass
 
@@ -70,3 +72,4 @@ class test_User(test_basemodel):
 
     def test_str(self):
         pass
+"""

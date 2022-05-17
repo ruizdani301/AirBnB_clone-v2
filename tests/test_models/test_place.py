@@ -7,6 +7,10 @@ from models.place import Place
 class test_Place(test_basemodel):
     """this class is for test """
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
     def test_ClassExist(self):
         """verify class exist"""
 
@@ -77,9 +81,6 @@ class test_Place(test_basemodel):
         """ test_latitude """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
-
-    def setUpClass(cls):
-        pass
 
     def test_pep8_conformance_place(self):
         pass

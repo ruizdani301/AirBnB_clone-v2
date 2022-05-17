@@ -7,6 +7,10 @@ from models.state import State
 class test_state(test_basemodel):
     """ test for state"""
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
     def test_ClassExist(self):
         """verify class exist"""
 
@@ -25,9 +29,7 @@ class test_state(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.name), str)
 
-    def setUpClass(cls):
-        pass
-
+    """
     def test_pep8_conformance_state(self):
         pass
 
@@ -55,3 +57,4 @@ class test_state(test_basemodel):
 
     def test_str(self):
         pass
+"""

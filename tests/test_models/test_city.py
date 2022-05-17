@@ -7,6 +7,10 @@ from models.city import City
 class test_City(test_basemodel):
     """ test for the class city"""
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
     def test_ClassExist(self):
         """verify class exist"""
 
@@ -30,9 +34,7 @@ class test_City(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.name), str)
 
-    def setUpClass(cls):
-        pass
-
+"""
     def test_pep8_conformance_city(self):
         pass
 
@@ -59,3 +61,4 @@ class test_City(test_basemodel):
 
     def test_str(self):
         pass
+"""
