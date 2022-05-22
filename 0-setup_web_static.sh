@@ -11,16 +11,16 @@ else
 
     service nginx restart
 fi
-mkdir -p /data/web_static/releases/test
-touch  /data/web_static/releases/test/index.html
+mkdir -p data/web_static/releases/test
+touch  data/web_static/releases/test/index.html
 echo "<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>" >> /data/web_static/releases/test/index.htm
-ln -sf /data/web_static/releases/test /data/web_static/current
+</html>" >> data/web_static/releases/test/index.htm
+sudo ln -sf data/web_static/releases/test /data/web_static/current
 chown -R ubuntu:ubuntu /data
 sudo sed -i "/listen 80 default_serve/a location /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
 sudo service nginx restart
