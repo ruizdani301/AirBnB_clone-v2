@@ -1,26 +1,28 @@
 #!/usr/bin/python3
-""" deploy web static"""
-
+"""Fabric script hat distributes an archive to your web servers"""
+from asyncio import run_coroutine_threadsafe
 from fabric.api import put, run, env
-import os
-import tarfile
-env.hosts = ['34.75.234.107', '3.84.184.141']
+from os.path import exists
+
+env.hosts = ["34.75.234.107", "3.84.184.141"]
 
 
 def do_deploy(archive_path):
-    """distributes an file to the web servers"""
-    if os.path.exists(archive_path) is False:
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
     try:
-        file_name = archive_path.split("/")[-1]
-        sin_ext = file_name(".")[0]
-        put(archive_path, "/tmp/")
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
         ruta = "/data/web_static/releases/"
-        run("tar -xzf {}{} {}".format(ruta, sin_ext, file_name))
-        run("sudo rm -f /tmp/{}".format(file_name))
-        run("sudo rm -rf /data/web_static/current")
-        run("ln -sf {}{} /data/web_static/current".format(ruta, sin_ext))
-
+        put(archive_path, '/tmp/')
+        run('sudo mkdir -p {}{}/'.format(ruta, no_ext))
+        run('sudo tar -xzf /tmp/{} -C {}{}/'.format(file_n, ruta, no_ext))
+        run('sudo rm /tmp/{}'.format(file_n))
+        run('sudo mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('sudo rm -rf {}{}/web_static'.format(ruta, no_ext))
+        run('sudo rm -rf /data/web_static/current')
+        run('sudo ln -s {}{}/ /data/web_static/current'.format(ruta, no_ext))
         return True
     except:
         return False
