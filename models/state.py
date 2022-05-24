@@ -23,8 +23,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """ return all the cities"""
+            from models.city import City
             list_city = []
-            for vcity in models.storage.all('City').values():
+            for vcity in models.storage.all(City).values():
                 if(vcity.state_id == self.id):
                     list_city.append(vcity)
             return list_city
