@@ -14,6 +14,7 @@
         {% elif key_id in sta %}
             {% set sta = sta[key_id] %}
             <H1>States: {{ sta.name }}</H1>
+            <h3>Cities:</h3>
             <ul>
             {% for city in sta.cities|sort(attribute="name") %}
                 <li>{{ city.id }}: <B>{{ city.name }}</B></li>
